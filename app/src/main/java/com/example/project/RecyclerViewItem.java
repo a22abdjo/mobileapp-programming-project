@@ -12,4 +12,17 @@ public class RecyclerViewItem {
         return title;
     }
 
+    @SuppressWarnings("WeakerAccess")
+    public static class RecyclerViewItem {
+        private String title;
+
+        public RecyclerViewItem(String title) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+    }
 }
