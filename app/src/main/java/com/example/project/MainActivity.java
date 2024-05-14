@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     private WebView myWebView;
 
     public void showExternalWebPage() {
-        myWebView.loadUrl("file:///android_res/layout/activity_main.xml");
+        myWebView.loadUrl("file:///android_asset/about.html");
     }
 
     public void showInternalWebPage() {
