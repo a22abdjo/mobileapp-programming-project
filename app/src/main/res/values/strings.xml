@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Skor</string>
+    <string name="app_external">casa</string>
+    <string name="app_internal">back</string>
 </resources>
