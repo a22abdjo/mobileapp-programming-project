@@ -1,19 +1,7 @@
 package com.example.project;
 
-@SuppressWarnings("WeakerAccess")
-public class RecyclerViewItem {
-    private String title;
-
-    public RecyclerViewItem(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     @SuppressWarnings("WeakerAccess")
-    public static class RecyclerViewItem {
+    public class RecyclerViewItem {
         private String title;
 
         public RecyclerViewItem(String title) {
@@ -25,4 +13,4 @@ public class RecyclerViewItem {
         }
 
     }
-}
+

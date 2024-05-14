@@ -11,7 +11,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-    static class RecyclerViewAdapter extends RecyclerView.Adapter<ViewHolder> {
+    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
         private List<RecyclerViewItem> items;
         private LayoutInflater layoutInflater;
@@ -25,8 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
         @Override
         @NonNull
-        public com.example.project.RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new com.example.project.RecyclerViewAdapter.ViewHolder(layoutInflater.inflate(R.layout.recycle, parent, false));
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(layoutInflater.inflate(R.layout.items_activity, parent, false));
         }
 
         @Override
@@ -58,4 +58,4 @@ import androidx.recyclerview.widget.RecyclerView;
             void onClick(RecyclerViewItem item);
         }
     }
-}
+

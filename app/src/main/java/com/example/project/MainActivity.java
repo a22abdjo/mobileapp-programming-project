@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,13 +22,13 @@ import java.util.List;
 
 
     @SuppressWarnings("FieldCanBeLocal")
-    public static class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
+    public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
 
 
-        private final String JSON_URL = "https://mobprog.webug.se/json-api?login=brom";
-        private final String JSON_FILE = "mountains.json";
+        private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a22abdjo";
+        private final String JSON_FILE = "Skor.json";
 
-        ArrayList<Mountain> items = new ArrayList<>();
+        ArrayList<Skor> items = new ArrayList<>();
 
         ArrayList<RecyclerViewItem> recyclerViewItems = new ArrayList<>();
 
@@ -36,70 +37,66 @@ import java.util.List;
         private Gson gson;
             private WebView myWebView;
 
-            public void showExternalWebPage() {
-                // TODO: Add your code for showing external web page here
-                myWebView.loadUrl("file:///android_res/layout/activity_main.xml");
+        public void showExternalWebPage() {
+            Intent intent = new Intent(MainActivity.this,SkorActivity.class);
+            startActivity(intent);
+        }
+
+        public void showInternalWebPage() {
+            myWebView.loadUrl("file:///android_asset/about.html");
+
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar= findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            myWebView = findViewById(R.id.my_webview);
+            myWebView.setWebViewClient(new WebViewClient()); // Do not open in Chrome!
+            myWebView.loadUrl("file:///android_asset/internal.html");
+            gson = new Gson();
+
+
+            for (int i = 0; i < items.size(); i++) {
+                Log.d("Skor", items.get(i).toString());
+                recyclerViewItems.add(new RecyclerViewItem(items.get(i).toString()));
             }
+            new JsonFile(this, this).execute(JSON_FILE);
+            //new JsonTask(this).execute(JSON_URL);
 
-            public void showInternalWebPage() {
-                // TODO: Add your code for showing internal web page here
-                myWebView.loadUrl("https://his.se");
-
-                //Intent intent = new Intent(MainActivity.this,SkorActivity.class);
-                //startActivity(intent);
-
-            }
-
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                setContentView(R.layout.activity_main);
-                Toolbar toolbar= findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-
-                myWebView = findViewById(R.id.my_webview);
-                myWebView.setWebViewClient(new WebViewClient()); // Do not open in Chrome!
-                myWebView.loadUrl("file:///android_res/layout/activity_main.xml");
-                gson = new Gson();
-
-
-                for (int i = 0; i < items.size(); i++) {
-                    Log.d("Kyckling", items.get(i).toString());
-                    recyclerViewItems.add(new RecyclerViewItem(items.get(i).toString()));
+            adapter = new RecyclerViewAdapter(this, recyclerViewItems, new RecyclerViewAdapter.OnClickListener() {
+                @Override
+                public void onClick(RecyclerViewItem item) {
+                    Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
                 }
-                new JsonFile(this, this).execute(JSON_FILE);
-                //new JsonTask(this).execute(JSON_URL);
+            });
 
-                adapter = new RecyclerViewAdapter(this, recyclerViewItems, new RecyclerViewAdapter.OnClickListener() {
-                    @Override
-                    public void onClick(RecyclerViewItem item) {
-                        Toast.makeText(com.example.project.MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                RecyclerView view = findViewById(R.id.recycler_view);
-                view.setLayoutManager(new LinearLayoutManager(this));
-                view.setAdapter(adapter);
+            RecyclerView view = findViewById(R.id.recycler_view);
+            view.setLayoutManager(new LinearLayoutManager(this));
+            view.setAdapter(adapter);
 
 
+        }
+
+        public boolean onOptionsItemSelected(MenuItem item) {
+            //noinspection SimplifiableIfStatement
+            int id = item.getItemId();
+            if (id == R.id.action_external_web) {
+                Log.d("==>", "Will display external web page");
+                showExternalWebPage();
+                return true;
             }
 
-            public boolean onOptionsItemSelected(MenuItem item) {
-                //noinspection SimplifiableIfStatement
-                int id = item.getItemId();
-                if (id == R.id.action_external_web) {
-                    Log.d("==>", "Will display external web page");
-                    showExternalWebPage();
-                    return true;
-                }
-
-                if (id == R.id.action_internal_web) {
-                    Log.d("==>", "Will display internal web page");
-                    showInternalWebPage();
-                    return true;
-                }
-                return super.onOptionsItemSelected(item);
+            if (id == R.id.action_internal_web) {
+                Log.d("==>", "Will display internal web page");
+                showInternalWebPage();
+                return true;
             }
+            return super.onOptionsItemSelected(item);
+        }
 
             @Override
             public void onPostExecute(String json) {
@@ -109,12 +106,12 @@ import java.util.List;
                 }.getType();
                 items = gson.fromJson(json, type);
                 for (int i = 0; i < items.size(); i++) {
-                    Log.d("Kyckling2", items.get(i).toString());
+                    Log.d("Skor", items.get(i).toString());
                     recyclerViewItems.add(new RecyclerViewItem(items.get(i).toString()));
                 }
                 //adapter.notifyDataSetChanged();
             }
         }
-}
+
 
 
